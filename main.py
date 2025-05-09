@@ -58,12 +58,12 @@ async def update_rice(user_id: int) -> None | tuple[int, int]:
 async def rice_handler(message: Message):
     res = await update_rice(message.from_user.id)
     if res is None:
-        return await message.answer('занято, завтра приходи')
+        return await message.reply('занято, завтра приходи')
     rice, given = res
     if given > 0:
-        return await message.answer(f'поздравляю, ты получил {given}, теперь у тебя {rice}')
+        return await message.reply(f'поздравляю, ты получил {given}, теперь у тебя {rice}')
     if given < 0:
-        return await message.answer(f'у тебя забрали {-given}, теперь у тебя {rice}')
+        return await message.reply(f'у тебя забрали {-given}, теперь у тебя {rice}')
     return None
 
 
