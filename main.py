@@ -32,7 +32,7 @@ async def prepare_database():
         await db.commit()
 
 
-async def update_rice(user_id: int) -> None | tuple[int, int]:
+async def update_rice(user_id: int) -> None | tuple[int, int | None]:
     async with aiosqlite.connect('db.sqlite3') as db:
         async with db.execute('SELECT * FROM users WHERE user_id = ?', (user_id,)) as cur:
             result = await cur.fetchone()
@@ -40,7 +40,7 @@ async def update_rice(user_id: int) -> None | tuple[int, int]:
                 _, rice, last_update = result
                 last_update = datetime.strptime(last_update, FORMAT)
                 if (last_update + timedelta(days=1)) >= datetime.now():
-                    return None
+                    return rice, None
             else:
                 rice = 0
         last_update = datetime.now()
@@ -56,14 +56,15 @@ async def update_rice(user_id: int) -> None | tuple[int, int]:
 
 @dp.message(Command('rice'))
 async def rice_handler(message: Message):
-    res = await update_rice(message.from_user.id)
-    if res is None:
-        return await message.reply('занято, завтра приходи')
-    rice, given = res
+    rice, given = await update_rice(message.from_user.id)
+    if given is None:
+        return await message.reply(f'{message.from_user.full_name}, рис на сегодня закончился, приходи завтра.')
     if given > 0:
-        return await message.reply(f'поздравляю, ты получил {given}, теперь у тебя {rice}')
+        return await message.reply(f'{message.from_user.full_name}, ты получил(а) {given} риса. Получено всего - {rice}.')
     if given < 0:
-        return await message.reply(f'у тебя забрали {-given}, теперь у тебя {rice}')
+        return await message.reply(f'{message.from_user.full_name}, у тебя забрали {-given} риса. Получено всего - {rice}.')
+    if given == 0:
+        return await message.reply(f'{message.from_user.full_name}, ты получил(а) ничего. Получено всего - {rice}.')
     return None
 
 
