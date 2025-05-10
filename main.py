@@ -134,7 +134,7 @@ async def rice_handler(message: Message):
 @dp.message(Command('top'))
 async def rice_top(message: Message):
     async with aiosqlite.connect('db.sqlite3') as db:
-        async with db.execute('SELECT user_id, rice FROM users ORDER BY rice LIMIT 50') as cur:
+        async with db.execute('SELECT user_id, rice FROM users ORDER BY rice DESC LIMIT 50') as cur:
             result = await cur.fetchall()
             mess = ''
             for user_idx, user in enumerate(result, start=1):
