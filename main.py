@@ -31,7 +31,7 @@ def get_plural_form(number: int, word: str) -> str:
         else parsed_word.inflect({'sing', 'nomn'})
     return form.word
 
-def format_timedelta(td: timedelta) -> str:
+def format_timedelta_plural(td: timedelta) -> str:
     days = td.days
     seconds = td.seconds
     hours = seconds // 3600
@@ -48,6 +48,31 @@ def format_timedelta(td: timedelta) -> str:
 
     if not parts:
         return "через минуту"
+    elif len(parts) == 1:
+        return f"через {parts[0]}"
+    else:
+        return f"через {' '.join(parts)}"
+
+
+def format_timedelta(td: timedelta) -> str:
+    days = td.days
+    seconds = td.seconds
+
+    hours = seconds // 3600
+    seconds %= 3600
+    minutes = seconds // 60
+
+    parts = []
+
+    if days > 0:
+        parts.append(f"{days} дней")
+    if hours > 0:
+        parts.append(f"{hours} часов")
+    if minutes > 0:
+        parts.append(f"{minutes} минут")
+
+    if not parts:
+        return "через"
     elif len(parts) == 1:
         return f"через {parts[0]}"
     else:

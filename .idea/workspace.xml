@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="03b2f5ee-e241-4620-a473-fbfcd3c2da79" name="Changes" comment="fix bug, autodelete /top msg">
+    <list default="true" id="03b2f5ee-e241-4620-a473-fbfcd3c2da79" name="Changes" comment="fix to work on python &lt;3.12">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
@@ -99,7 +99,15 @@
       <option name="project" value="LOCAL" />
       <updated>1746882893640</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="fix to work on python &lt;3.12">
+      <option name="closed" value="true" />
+      <created>1746883099560</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1746883099560</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -107,6 +115,7 @@
     <MESSAGE value="change /rice answer messages" />
     <MESSAGE value="/top, remaining time" />
     <MESSAGE value="fix bug, autodelete /top msg" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix bug, autodelete /top msg" />
+    <MESSAGE value="fix to work on python &lt;3.12" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix to work on python &lt;3.12" />
   </component>
 </project>
