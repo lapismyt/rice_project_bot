@@ -9,7 +9,7 @@ import aiosqlite
 from datetime import datetime, timedelta
 import random
 from loguru import logger
-import pymorphy2
+# import pymorphy2
 
 load_dotenv()
 
@@ -18,40 +18,40 @@ OWNER_ID = int(os.getenv('OWNER_ID'))
 FORMAT = '%Y-%m-%d %H:%M:%S'
 ZERO_DATE = datetime(1950, 1, 1, 0, 0, 0, 0)
 
-morph = pymorphy2.MorphAnalyzer(lang='ru')
+# morph = pymorphy2.MorphAnalyzer(lang='ru')
 bot = Bot(BOT_TOKEN)
 dp = Dispatcher()
 
 
-def get_plural_form(number: int, word: str) -> str:
-    parsed_word = morph.parse(word)[0]
-    form = parsed_word.inflect({'plur', 'gent'})\
-        if (number % 10 in [2, 3, 4]
-            and number % 100 not in [12, 13, 14])\
-        else parsed_word.inflect({'sing', 'nomn'})
-    return form.word
+# def get_plural_form(number: int, word: str) -> str:
+#     parsed_word = morph.parse(word)[0]
+#     form = parsed_word.inflect({'plur', 'gent'})\
+#         if (number % 10 in [2, 3, 4]
+#             and number % 100 not in [12, 13, 14])\
+#         else parsed_word.inflect({'sing', 'nomn'})
+#     return form.word
 
-def format_timedelta_plural(td: timedelta) -> str:
-    days = td.days
-    seconds = td.seconds
-    hours = seconds // 3600
-    seconds %= 3600
-    minutes = seconds // 60
-
-    parts = []
-    if days > 0:
-        parts.append(f"{days} {get_plural_form(days, 'день')}")
-    if hours > 0:
-        parts.append(f"{hours} {get_plural_form(hours, 'час')}")
-    if minutes > 0:
-        parts.append(f"{minutes} {get_plural_form(minutes, 'минута')}")
-
-    if not parts:
-        return "через минуту"
-    elif len(parts) == 1:
-        return f"через {parts[0]}"
-    else:
-        return f"через {' '.join(parts)}"
+# def format_timedelta_plural(td: timedelta) -> str:
+#     days = td.days
+#     seconds = td.seconds
+#     hours = seconds // 3600
+#     seconds %= 3600
+#     minutes = seconds // 60
+#
+#     parts = []
+#     if days > 0:
+#         parts.append(f"{days} {get_plural_form(days, 'день')}")
+#     if hours > 0:
+#         parts.append(f"{hours} {get_plural_form(hours, 'час')}")
+#     if minutes > 0:
+#         parts.append(f"{minutes} {get_plural_form(minutes, 'минута')}")
+#
+#     if not parts:
+#         return "через минуту"
+#     elif len(parts) == 1:
+#         return f"через {parts[0]}"
+#     else:
+#         return f"через {' '.join(parts)}"
 
 
 def format_timedelta(td: timedelta) -> str:
