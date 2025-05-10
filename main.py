@@ -1,6 +1,5 @@
 from aiogram import Bot, Dispatcher, F
 from aiogram.filters import Command, CommandStart
-from aiogram.filters.callback_data import CallbackData, CallbackQuery, CallbackQueryFilter
 from aiogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 import html
 from dotenv import load_dotenv
@@ -94,7 +93,8 @@ async def update_rice(user_id: int) -> dict:
 async def rice_handler(message: Message):
     data = await update_rice(message.from_user.id)
     if not 'given' in data:
-        return await message.reply(f'{message.from_user.full_name}, рис на сегодня закончился, приходи {format_timedelta(data['remaining'])}.')
+        when_next = format_timedelta(data['remaining'])
+        return await message.reply(f'{message.from_user.full_name}, рис на сегодня закончился, приходи {when_next}.')
     if data['given'] > 0:
         return await message.reply(f'{message.from_user.full_name}, ты получил(а) {data['given']} риса. Получено всего - {data['rice']}.')
     if data['given'] < 0:
@@ -114,8 +114,10 @@ async def rice_top(message: Message):
                 # user_member = await bot.get_chat_member(message.chat.id, user[0])
                 user_chat = await bot.get_chat(user[0])
                 mess += f'{user_idx}. <a href="tg://openmessage?user_id={user[0]}">{html.escape(user_chat.full_name)}</a> - {user[1]}.\n'
-
-    return await message.reply(f'Топ по рису:\n{mess}')
+    msg = await message.reply(f'Топ по рису:\n{mess}')
+    await asyncio.sleep(60)
+    await msg.delete()
+    await message.delete()
 
 
 async def main():
