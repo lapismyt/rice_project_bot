@@ -92,15 +92,17 @@ async def update_rice(user_id: int) -> dict:
 @dp.message(Command('rice'))
 async def rice_handler(message: Message):
     data = await update_rice(message.from_user.id)
+    rice = data['rice']
+    given = data['given']
     if not 'given' in data:
         when_next = format_timedelta(data['remaining'])
         return await message.reply(f'{message.from_user.full_name}, рис на сегодня закончился, приходи {when_next}.')
     if data['given'] > 0:
-        return await message.reply(f'{message.from_user.full_name}, ты получил(а) {data['given']} риса. Получено всего - {data['rice']}.')
+        return await message.reply(f'{message.from_user.full_name}, ты получил(а) {given} риса. Получено всего - {rice}.')
     if data['given'] < 0:
-        return await message.reply(f'{message.from_user.full_name}, у тебя забрали {-data['given']} риса. Получено всего - {data['rice']}.')
+        return await message.reply(f'{message.from_user.full_name}, у тебя забрали {-given} риса. Получено всего - {rice}.')
     if data['given'] == 0:
-        return await message.reply(f'{message.from_user.full_name}, ты получил(а) ничего. Получено всего - {data['rice']}.')
+        return await message.reply(f'{message.from_user.full_name}, ты получил(а) ничего. Получено всего - {rice}.')
     return None
 
 
