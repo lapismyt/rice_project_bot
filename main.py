@@ -9,7 +9,6 @@ import aiosqlite
 from datetime import datetime, timedelta
 import random
 from loguru import logger
-# import pymorphy2
 
 load_dotenv()
 
@@ -18,40 +17,8 @@ OWNER_ID = int(os.getenv('OWNER_ID'))
 FORMAT = '%Y-%m-%d %H:%M:%S'
 ZERO_DATE = datetime(1950, 1, 1, 0, 0, 0, 0)
 
-# morph = pymorphy2.MorphAnalyzer(lang='ru')
 bot = Bot(BOT_TOKEN)
 dp = Dispatcher()
-
-
-# def get_plural_form(number: int, word: str) -> str:
-#     parsed_word = morph.parse(word)[0]
-#     form = parsed_word.inflect({'plur', 'gent'})\
-#         if (number % 10 in [2, 3, 4]
-#             and number % 100 not in [12, 13, 14])\
-#         else parsed_word.inflect({'sing', 'nomn'})
-#     return form.word
-
-# def format_timedelta_plural(td: timedelta) -> str:
-#     days = td.days
-#     seconds = td.seconds
-#     hours = seconds // 3600
-#     seconds %= 3600
-#     minutes = seconds // 60
-#
-#     parts = []
-#     if days > 0:
-#         parts.append(f"{days} {get_plural_form(days, 'день')}")
-#     if hours > 0:
-#         parts.append(f"{hours} {get_plural_form(hours, 'час')}")
-#     if minutes > 0:
-#         parts.append(f"{minutes} {get_plural_form(minutes, 'минута')}")
-#
-#     if not parts:
-#         return "через минуту"
-#     elif len(parts) == 1:
-#         return f"через {parts[0]}"
-#     else:
-#         return f"через {' '.join(parts)}"
 
 
 def format_timedelta(td: timedelta) -> str:
@@ -118,7 +85,7 @@ async def update_rice(user_id: int) -> dict:
 async def rice_handler(message: Message):
     data = await update_rice(message.from_user.id)
     rice = data['rice']
-    if not 'given' in data:
+    if 'given' not in data:
         when_next = format_timedelta(data['remaining'])
         return await message.reply(f'{message.from_user.full_name}, рис на сегодня закончился, приходи {when_next}.')
     given = data['given']
@@ -139,8 +106,8 @@ async def rice_top(message: Message):
             mess = ''
             for user_idx, user in enumerate(result, start=1):
                 # user_member = await bot.get_chat_member(message.chat.id, user[0])
-                user_chat = await bot.get_chat(user[0])
-                mess += f'{user_idx}. <a href="tg://openmessage?user_id={user[0]}">{html.escape(user_chat.full_name)}</a> - {user[1]}.\n'
+                user_member = await bot.get_chat_member(message.chat.id, user[0])
+                mess += f'{user_idx}. <a href="tg://openmessage?user_id={user[0]}">{html.escape(user_member.user.id)}</a> - {user[1]}.\n'
     msg = await message.reply(f'Топ по рису:\n{mess}', parse_mode='html')
     await asyncio.sleep(600)
     await msg.delete()
