@@ -107,7 +107,7 @@ async def rice_top(message: Message):
             for user_idx, user in enumerate(result, start=1):
                 # user_member = await bot.get_chat_member(message.chat.id, user[0])
                 user_member = await bot.get_chat_member(message.chat.id, user[0])
-                mess += f'{user_idx}. <a href="tg://openmessage?user_id={user[0]}">{html.escape(user_member.user.id)}</a> - {user[1]}.\n'
+                mess += f'{user_idx}. <a href="tg://openmessage?user_id={user[0]}">{html.escape(user_member.user.full_name)}</a> - {user[1]}.\n'
     msg = await message.reply(f'Топ по рису:\n{mess}', parse_mode='html')
     await asyncio.sleep(600)
     await msg.delete()
